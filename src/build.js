@@ -3,8 +3,30 @@ const fs = require('fs');
 const path = require('path');
 const semverSort = require('semver-sort');
 
+const validate = require('./validate');
 
-module.exports.buildRegistry = () => {
+module.exports.buildRegistryCommand = (yargs) => {
+
+  registry = buildRegistry()
+
+  let valid = validate.validateRegistry(registry)
+  if (!valid) {
+    process.exit(-1)
+  }
+
+  try {
+    let buildDirectory = './build';
+    fs.writeFileSync(path.join(buildDirectory, "registry.min.json"), JSON.stringify(registry))
+    fs.writeFileSync(path.join(buildDirectory, "registry.json"), JSON.stringify(registry, null, 2))
+
+  }
+  catch (e) {
+    console.error("Error during registry export", e);
+  }
+
+}
+
+function buildRegistry() {
   console.log("Building the registry...");
 
   let registry = {
@@ -45,14 +67,7 @@ module.exports.buildRegistry = () => {
     console.error("Error during registry build", e);
   }
 
-  try {
-    let buildDirectory = './build';
-    fs.writeFileSync(path.join(buildDirectory, "registry.min.json"), JSON.stringify(registry))
-    fs.writeFileSync(path.join(buildDirectory, "registry.json"), JSON.stringify(registry, null, 2))
-
-  }
-  catch (e) {
-    console.error("Error during registry export", e);
-  }
+  return registry
 
 }
+

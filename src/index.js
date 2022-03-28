@@ -18,7 +18,7 @@ var argv = yargs
     checkCommands(yargs, argv, 2)
   })
   .command('build', 'Build the registry', function (yargs) {
-    build.buildRegistry()
+    build.buildRegistryCommand(yargs)
   })
   .help('help')
   .wrap(null)

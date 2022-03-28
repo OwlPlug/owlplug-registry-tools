@@ -10,6 +10,7 @@
   "author": "Arthur Poiret",
   "license": "MIT",
   "dependencies": {
+    "ajv": "^8.11.0",
     "js-yaml": "^4.1.0",
     "semver-sort": "^1.0.0",
     "yargs": "^17.4.0"
