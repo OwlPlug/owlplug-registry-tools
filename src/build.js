@@ -14,14 +14,17 @@ module.exports.buildRegistryCommand = (yargs) => {
     process.exit(-1)
   }
 
-  try {
-    let buildDirectory = './build';
-    fs.writeFileSync(path.join(buildDirectory, "registry.min.json"), JSON.stringify(registry))
-    fs.writeFileSync(path.join(buildDirectory, "registry.json"), JSON.stringify(registry, null, 2))
+  exportRegistryFile(registry)
 
-  }
-  catch (e) {
-    console.error("Error during registry export", e);
+}
+
+module.exports.validateRegistryCommand = (yargs) => {
+
+  registry = buildRegistry()
+
+  let valid = validate.validateRegistry(registry)
+  if (!valid) {
+    process.exit(-1)
   }
 
 }
@@ -68,6 +71,22 @@ function buildRegistry() {
   }
 
   return registry
+
+}
+
+function exportRegistryFile(registry) {
+
+  console.log("Creating registry files...");
+
+  try {
+    let buildDirectory = './build';
+    fs.writeFileSync(path.join(buildDirectory, "registry.min.json"), JSON.stringify(registry))
+    fs.writeFileSync(path.join(buildDirectory, "registry.json"), JSON.stringify(registry, null, 2))
+
+  }
+  catch (e) {
+    console.error("Error during registry export", e);
+  }
 
 }
 
