@@ -63,7 +63,7 @@ function buildStore() {
         let packagePath = path.join(groupPath, package);
         let versions = fs.readdirSync(packagePath);
 
-        // Only the latest version is used to build the registry
+        // Only the latest version is used to build the store
         if (versions.length > 0) {
           semverSort.desc(versions);
           let latestVersionTag = versions[0];
@@ -92,7 +92,7 @@ function buildRegistry() {
     name: "OwlPlug central",
     url: "https://central.owlplug.com",
     schemaVersion: "1.2.0",
-    products: [] // TODO : Must be changed to packages ?
+    packages: {}
   }
 
   let registryDirectory = './registry';
@@ -108,17 +108,28 @@ function buildRegistry() {
         let packagePath = path.join(groupPath, package);
         let versions = fs.readdirSync(packagePath);
 
-        // Only the latest version is used to build the registry
+        let packageSlug = group + "/" + package;
+        let packageContent = {
+          slug : packageSlug,
+          latest_version: "",
+          versions : {}
+        }
+
+        for(let version of versions) {
+          let packageVersionYamlFile = path.join(packagePath, version, 'package.yaml');
+          let packageVersionContent = yaml.load(fs.readFileSync(packageVersionYamlFile, 'utf8'));
+
+          packageContent.versions[version] = packageVersionContent;
+        }
+
+        // Add a latest version tag
         if (versions.length > 0) {
           semverSort.desc(versions);
-          let latestVersionTag = versions[0];
-
-          let packageYamlFile = path.join(packagePath, latestVersionTag, 'package.yaml');
-
-          const packageContent = yaml.load(fs.readFileSync(packageYamlFile, 'utf8'));
-          registry.products.push(packageContent);
-
+          packageContent.latest_version = versions[0];
         }
+
+        registry.packages[packageSlug] = packageContent;
+
       }
     }
   }

@@ -8,7 +8,7 @@
     "name",
     "url",
     "schemaVersion",
-    "products"
+    "packages"
   ],
   "properties": {
     "name": {
@@ -41,12 +41,27 @@
       ],
       "pattern": "^(.*)$"
     },
-    "products": {
-      "$id": "#/properties/products",
-      "type": "array",
-      "title": "Store Products",
-      "items": {
-        "$ref": "/schemas/package"
+    "packages": {
+      "$id": "#/properties/packages",
+      "type": "object",
+      "title": "Registry packages",
+      "patternProperties": {
+        "^.*$": {
+          "$id": "#/properties/packages/package",
+          "type": "object",
+          "properties": {
+            "versions" : {
+              "$id": "#/properties/packages/package/versions",
+              "type" : "object",
+              "patternProperties": {
+                "^.*$" : {
+                  "$id": "#/properties/packages/package/versions/version",
+                  "$ref" : "/schemas/package"
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
