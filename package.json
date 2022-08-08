@@ -1,11 +1,15 @@
 {
-  "name": "central-registry",
+  "name": "@owlplug/owlplug-registry-tools",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js --name=HelloWorld!",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/owlplug/owlplug-registry-tools.git"
   },
   "author": "Arthur Poiret",
   "license": "MIT",
