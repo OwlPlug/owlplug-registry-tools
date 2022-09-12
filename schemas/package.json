@@ -1,0 +1,175 @@
+{
+  "$id": "https://owlplug.com/schemas/package",
+  "type": "object",
+  "title": "Product Item",
+  "required": [
+    "name",
+    "creator",
+    "screenshotUrl",
+    "description",
+    "pageUrl",
+    "type",
+    "bundles"
+  ],
+  "properties": {
+    "name": {
+      "$id": "#/properties/name",
+      "type": "string",
+      "title": "Product Name",
+      "default": "",
+      "examples": [
+        "Wobbleizer"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "creator": {
+      "$id": "#/properties/creator",
+      "type": "string",
+      "title": "Product Creator",
+      "default": "",
+      "examples": [
+        "Dropsnorz"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "screenshotUrl": {
+      "$id": "#/properties/screenshotUrl",
+      "type": "string",
+      "title": "Product Screenshot Url",
+      "default": "",
+      "examples": [
+        "https://via.placeholder.com/350x150.png"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "description": {
+      "$id": "#/properties/description",
+      "type": "string",
+      "title": "Product Description",
+      "default": "",
+      "examples": [
+        "A frequency filter with LFO modulation"
+      ],
+      "pattern": "^(\n|.)*$"
+    },
+    "pageUrl": {
+      "$id": "#/properties/pageUrl",
+      "type": "string",
+      "title": "Product Page Url",
+      "default": "",
+      "examples": [
+        "https://example.com"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "type": {
+      "$id": "#/properties/type",
+      "type": "string",
+      "title": "Product Type",
+      "default": "",
+      "examples": [
+        "effect"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "stage": {
+      "$id": "#/properties/stage",
+      "type": "string",
+      "title": "Product Stage",
+      "default": "",
+      "examples": [
+        "release"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "tags": {
+      "$id": "#/properties/tags",
+      "type": "array",
+      "title": "Product Tags",
+      "items": {
+        "$id": "#/properties/tags/items",
+        "type": "string",
+        "title": "Tag Item",
+        "default": "",
+        "examples": [
+          "Filter",
+          "LFO"
+        ],
+        "pattern": "^(.*)$"
+      }
+    },
+    "bundles": {
+      "$id": "#/properties/bundles",
+      "type": "array",
+      "title": "Product Bundles",
+      "items": {
+        "$id": "#/properties/bundles/items",
+        "type": "object",
+        "title": "Bundle Item",
+        "required": [
+          "name",
+          "targets",
+          "format",
+          "downloadUrl"
+        ],
+        "properties": {
+          "name": {
+            "$id": "#/properties/bundles/items/properties/name",
+            "type": "string",
+            "title": "Bundle Name",
+            "default": "",
+            "examples": [
+              "Win x64"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "targets": {
+            "$id": "#/properties/bundles/items/properties/targets",
+            "type": "array",
+            "title": "Bundle Targets",
+            "items": {
+              "$id": "#/properties/bundles/items/properties/targets/items",
+              "type": "string",
+              "title": "Target Item",
+              "default": "",
+              "examples": [
+                "win64",
+                "osx"
+              ],
+              "pattern": "^(.*)$"
+            }
+          },
+          "format": {
+            "$id": "#/properties/bundles/items/properties/format",
+            "type": "string",
+            "title": "Bundle format",
+            "default": "",
+            "examples": [
+              "vst"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "downloadUrl": {
+            "$id": "#/properties/bundles/items/properties/downloadUrl",
+            "type": "string",
+            "title": "Bundle Download Url",
+            "default": "",
+            "examples": [
+              "https://example.com/plugin.zip"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "fileSize": {
+            "$id": "#/properties/bundles/items/properties/fileSize",
+            "type": "integer",
+            "title": "Bundle FileSize",
+            "default": 0,
+            "examples": [
+              5900000
+            ]
+          }
+        }
+      }
+    }
+  }
+}

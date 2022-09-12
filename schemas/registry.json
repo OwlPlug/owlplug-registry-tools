@@ -1,0 +1,68 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://owlplug.com/schemas/registry",
+  "type": "object",
+  "title": "Store Object",
+  "required": [
+    "name",
+    "url",
+    "schemaVersion",
+    "packages"
+  ],
+  "properties": {
+    "name": {
+      "$id": "#/properties/name",
+      "type": "string",
+      "title": "Store Name",
+      "default": "",
+      "examples": [
+        "My Custom store"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "url": {
+      "$id": "#/properties/url",
+      "type": "string",
+      "title": "Store Url",
+      "default": "",
+      "examples": [
+        "https://example.com"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "version": {
+      "$id": "#/properties/schemaVersion",
+      "type": "string",
+      "title": "Store schema version",
+      "default": "",
+      "examples": [
+        "1.0.0"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "packages": {
+      "$id": "#/properties/packages",
+      "type": "object",
+      "title": "Registry packages",
+      "patternProperties": {
+        "^.*$": {
+          "$id": "#/properties/packages/package",
+          "type": "object",
+          "properties": {
+            "versions" : {
+              "$id": "#/properties/packages/package/versions",
+              "type" : "object",
+              "patternProperties": {
+                "^.*$" : {
+                  "$id": "#/properties/packages/package/versions/version",
+                  "$ref" : "/schemas/package"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
