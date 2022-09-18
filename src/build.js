@@ -32,7 +32,7 @@ module.exports.validateRegistryCommand = (yargs) => {
   }
 
   let store = buildStore()
-  valid = validate.validateStore(registry)
+  valid = validate.validateStore(store)
   if (!valid) {
     process.exit(-1)
   }
