@@ -1,7 +1,7 @@
 const build = require('./build')
 const schema = require('./schema');
 const exporter = require('./export');
-
+const validate = require('./validate');
 
 
 module.exports.buildRegistryCommand = (yargs) => {
@@ -37,4 +37,11 @@ module.exports.buildRegistryCommand = (yargs) => {
       process.exit(-1)
     }
   
+  }
+
+  module.exports.validatePackageCommand = (yargs) => {
+    
+    let arg = yargs.argv._[2]
+    validate.validatePackageFile(arg)
+
   }

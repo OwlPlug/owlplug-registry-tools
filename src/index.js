@@ -24,7 +24,7 @@ var argv = yargs
         commands.validateRegistryCommand(yargs)
       })
       .command('package', 'validate a package file definition', function (yargs) {
-        console.log('Not yet implemented...')
+        commands.validatePackageCommand(yargs)
       })
       .help('help')
       .updateStrings({
