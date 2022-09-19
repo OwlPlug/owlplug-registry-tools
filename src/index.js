@@ -1,5 +1,5 @@
 const yargs = require('yargs');
-const build = require('./build')
+const commands = require('./commands')
 
 var argv = yargs
   .usage('usage: $0 <command>')
@@ -21,7 +21,7 @@ var argv = yargs
     argv = yargs
       .usage('usage: $0 validate <item> [options]')
       .command('registry', 'validate the complete registry', function (yargs) {
-        build.validateRegistryCommand(yargs)
+        commands.validateRegistryCommand(yargs)
       })
       .command('package', 'validate a package file definition', function (yargs) {
         console.log('Not yet implemented...')
@@ -35,7 +35,7 @@ var argv = yargs
     checkCommands(yargs, argv, 2)
   })
   .command('build', 'Build the registry', function (yargs) {
-    build.buildRegistryCommand(yargs)
+    commands.buildRegistryCommand(yargs)
   })
   .help('help')
   .wrap(null)

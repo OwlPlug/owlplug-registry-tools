@@ -3,8 +3,6 @@ const registrySchema = require("../schemas/registry.json")
 const packageSchema = require("../schemas/package.json")
 const storeLegacySchema = require("../schemas/store.legacy.json")
 
-
-
 module.exports.validateRegistry = (registry) => {
 
     console.log("Validating registry schema...")
