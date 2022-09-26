@@ -1,58 +1,84 @@
-const Ajv = require("ajv")
-const registrySchema = require("../schemas/registry.json")
-const packageSchema = require("../schemas/package.json")
-const storeLegacySchema = require("../schemas/store.legacy.json")
+const yaml = require('js-yaml');
+const https = require("https");
+const crypto = require('crypto');
+const fs = require("fs");
+const path = require("path");
 
+const schema = require('./schema');
 
+module.exports.validatePackageFile = (path) => {
 
-module.exports.validateRegistry = (registry) => {
-
-    console.log("Validating registry schema...")
-    let ajv = new Ajv();
-    ajv.addSchema(packageSchema)
-    let validate = ajv.compile(registrySchema)
-
-    let valid = validate(registry)
-
-    if (!valid) {
-        console.log("Error during schema validation")
-        console.log(validate.errors)
+    if (fs.existsSync(path)) {
+        const packageContent = yaml.load(fs.readFileSync(path, 'utf8'))
+        validatePackage(packageContent)
+    } else {
+        console.log(`No such file: ${path}`)
     }
 
-    return valid
 }
 
 
-module.exports.validateStore = (store) => {
+async function validatePackage(package) {
 
-    console.log("Validating legacy store schema...")
-    let ajv = new Ajv();
-    ajv.addSchema(packageSchema)
-    let validate = ajv.compile(storeLegacySchema)
+    let valid = schema.validatePackage(package)
 
-    let valid = validate(store)
-
-    if (!valid) {
-        console.log("Error during schema validation")
-        console.log(validate.errors)
+    if(valid) {
+        console.log("Package schema is valid")
+    } else {
+        console.log("Package schema is invalid")
+        process.exit(-1)
     }
 
-    return valid
-}
+    for (bundle of package.bundles) {
 
-module.exports.validatePackage = (pack) => {
+        let dir = "./build/tmp"
+        let filename = "plugin-file"
 
-    console.log("Validating package schema...")
-    let ajv = new Ajv();
-    let validate = ajv.compile(packageSchema)
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir, { recursive: true });
+        }
 
-    let valid = validate(pack)
+        let filepath = path.join(dir, filename);
+        await download(bundle.downloadUrl, filepath)
 
-    if (!valid) {
-        console.log("Error during schema validation")
-        console.log(validate.errors)
+        let file = fs.readFileSync(filepath);
+        let hashSum = crypto.createHash('sha256');
+        hashSum.update(file);
+        let hex = hashSum.digest('hex');
+        
+        if(hex === bundle.downloadSha256) {
+            console.log(`Valid SHA256 hash for file ${bundle.downloadUrl}`)
+
+        } else {
+            console.log(`Invalid SHA256 hash for file ${bundle.downloadUrl}`)
+            console.log(`Computed: ${hex}`)
+            console.log(`Expected: ${bundle.downloadSha256}`)
+            process.exit(-1)
+        }
     }
-
-    return valid;
 }
 
+const download = async (url, filepath) => {
+    return new Promise((resolve, reject) => {
+        https.get(url, (resp) => {
+
+            // Delete previous file
+            if (fs.existsSync(filepath)) {
+                fs.unlinkSync(filepath);
+            }
+
+            // chunk received
+            resp.on('data', (chunk) => {
+                fs.appendFileSync(filepath, chunk);
+            });
+
+            // last chunk received, download complete
+            resp.on('end', () => {
+                resolve();
+            });
+
+        }).on("error", (err) => {
+            reject(new Error(err.message))
+        });
+    })
+}

@@ -3,43 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const semverSort = require('semver-sort');
 
-const validate = require('./validate');
-
-module.exports.buildRegistryCommand = (yargs) => {
-
-  let registry = buildRegistry()
-  let valid = validate.validateRegistry(registry)
-  if (!valid) {
-    process.exit(-1)
-  }
-  exportRegistryFile(registry)
-
-  let store = buildStore()
-  valid = validate.validateStore(store)
-  if (!valid) {
-    process.exit(-1)
-  }
-  exportStoreFile(store)
-
-}
-
-module.exports.validateRegistryCommand = (yargs) => {
-
-  let registry = buildRegistry()
-  let valid = validate.validateRegistry(registry)
-  if (!valid) {
-    process.exit(-1)
-  }
-
-  let store = buildStore()
-  valid = validate.validateStore(store)
-  if (!valid) {
-    process.exit(-1)
-  }
-
-}
-
-function buildStore() {
+module.exports.buildStore = () => {
 
   console.log("Building the legacy store...");
 
@@ -85,7 +49,7 @@ function buildStore() {
   
 }
 
-function buildRegistry() {
+module.exports.buildRegistry = () => {
   console.log("Building the registry...");
 
   let registry = {
@@ -138,44 +102,6 @@ function buildRegistry() {
   }
 
   return registry
-
-}
-
-function exportStoreFile(store) {
-
-  console.log("Creating store files...");
-
-  try {
-    let buildDirectory = './build';
-    if (!fs.existsSync(buildDirectory)){
-      fs.mkdirSync(buildDirectory, { recursive: true });
-    }
-    fs.writeFileSync(path.join(buildDirectory, "store.legacy.min.json"), JSON.stringify(store))
-    fs.writeFileSync(path.join(buildDirectory, "store.legacy.json"), JSON.stringify(store, null, 2))
-
-  }
-  catch (e) {
-    console.error("Error during store legacy export", e);
-  }
-
-}
-
-function exportRegistryFile(registry) {
-
-  console.log("Creating registry files...");
-
-  try {
-    let buildDirectory = './build';
-    if (!fs.existsSync(buildDirectory)){
-      fs.mkdirSync(buildDirectory, { recursive: true });
-    }
-    fs.writeFileSync(path.join(buildDirectory, "registry.min.json"), JSON.stringify(registry))
-    fs.writeFileSync(path.join(buildDirectory, "registry.json"), JSON.stringify(registry, null, 2))
-
-  }
-  catch (e) {
-    console.error("Error during registry export", e);
-  }
 
 }
 
