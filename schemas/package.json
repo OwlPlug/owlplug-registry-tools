@@ -110,7 +110,8 @@
           "name",
           "targets",
           "format",
-          "downloadUrl"
+          "downloadUrl",
+          "downloadSha256"
         ],
         "properties": {
           "name": {
@@ -157,6 +158,13 @@
             "examples": [
               "https://example.com/plugin.zip"
             ],
+            "pattern": "^(.*)$"
+          },
+          "downloadSha256": {
+            "$id": "#/properties/bundles/items/properties/downloadSha256",
+            "type": "string",
+            "title": "Bundle file SHA256 hash",
+            "default": "",
             "pattern": "^(.*)$"
           },
           "fileSize": {

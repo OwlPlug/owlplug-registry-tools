@@ -2,13 +2,18 @@ const yaml = require('js-yaml');
 const https = require("https");
 const crypto = require('crypto');
 const fs = require("fs");
+const path = require("path");
 
 const schema = require('./schema');
 
 module.exports.validatePackageFile = (path) => {
 
-    const packageContent = yaml.load(fs.readFileSync(path, 'utf8'))
-    validatePackage(packageContent)
+    if (fs.existsSync(path)) {
+        const packageContent = yaml.load(fs.readFileSync(path, 'utf8'))
+        validatePackage(packageContent)
+    } else {
+        console.log(`No such file: ${path}`)
+    }
 
 }
 
@@ -20,35 +25,54 @@ async function validatePackage(package) {
     if(valid) {
         console.log("Package schema is valid")
     } else {
+        console.log("Package schema is invalid")
         process.exit(-1)
     }
 
     for (bundle of package.bundles) {
-        let path = "./tmp/plugin-file"
 
-        await download(bundle.downloadUrl, path)
-        const file = fs.readFileSync(path);
-        const hashSum = crypto.createHash('sha256');
+        let dir = "./build/tmp"
+        let filename = "plugin-file"
+
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir, { recursive: true });
+        }
+
+        let filepath = path.join(dir, filename);
+        await download(bundle.downloadUrl, filepath)
+
+        let file = fs.readFileSync(filepath);
+        let hashSum = crypto.createHash('sha256');
         hashSum.update(file);
-        const hex = hashSum.digest('hex');
-        console.log(hex);
+        let hex = hashSum.digest('hex');
+        
+        if(hex === bundle.downloadSha256) {
+            console.log(`Valid SHA256 hash for file ${bundle.downloadUrl}`)
 
-        // TODO validate wth hex referenced in package.
+        } else {
+            console.log(`Invalid SHA256 hash for file ${bundle.downloadUrl}`)
+            console.log(`Computed: ${hex}`)
+            console.log(`Expected: ${bundle.downloadSha256}`)
+            process.exit(-1)
+        }
     }
-
 }
 
-const download = async (url, fileFullPath) => {
-    console.log('Downloading file from: '+url)
+const download = async (url, filepath) => {
     return new Promise((resolve, reject) => {
         https.get(url, (resp) => {
 
-            // chunk received from the server
+            // Delete previous file
+            if (fs.existsSync(filepath)) {
+                fs.unlinkSync(filepath);
+            }
+
+            // chunk received
             resp.on('data', (chunk) => {
-                fs.appendFileSync(fileFullPath, chunk);
+                fs.appendFileSync(filepath, chunk);
             });
 
-            // last chunk received, we are done
+            // last chunk received, download complete
             resp.on('end', () => {
                 resolve();
             });
