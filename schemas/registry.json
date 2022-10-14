@@ -14,31 +14,35 @@
     "name": {
       "$id": "#/properties/name",
       "type": "string",
-      "title": "Store Name",
+      "title": "Registry Name",
       "default": "",
       "examples": [
         "My Custom store"
       ],
+      "maxLength": 255,
       "pattern": "^(.*)$"
     },
     "url": {
       "$id": "#/properties/url",
       "type": "string",
-      "title": "Store Url",
+      "title": "Registry Url",
       "default": "",
       "examples": [
         "https://example.com"
       ],
-      "pattern": "^(.*)$"
+      "maxLength": 255,
+      "format": "uri",
+      "pattern": "^https://"
     },
     "version": {
       "$id": "#/properties/schemaVersion",
       "type": "string",
-      "title": "Store schema version",
+      "title": "Registry schema version",
       "default": "",
       "examples": [
         "1.0.0"
       ],
+      "maxLength": 255,
       "pattern": "^(.*)$"
     },
     "packages": {

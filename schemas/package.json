@@ -1,9 +1,11 @@
 {
   "$id": "https://owlplug.com/schemas/package",
   "type": "object",
-  "title": "Product Item",
+  "title": "Package Item",
+  "additionalProperties": false,
   "required": [
     "name",
+    "slug",
     "creator",
     "screenshotUrl",
     "description",
@@ -15,52 +17,115 @@
     "name": {
       "$id": "#/properties/name",
       "type": "string",
-      "title": "Product Name",
+      "title": "Package Name",
       "default": "",
       "examples": [
         "Wobbleizer"
       ],
+      "maxLength": 255,
       "pattern": "^(.*)$"
+    },
+    "slug": {
+      "$id": "#/properties/slug",
+      "type": "string",
+      "title": "Package Slug",
+      "default": "",
+      "examples": [
+        "wobbleizer"
+      ],
+      "maxLength": 255,
+      "pattern": "^[a-z0-9]+(?:[a-z0-9]+)*$"
     },
     "creator": {
       "$id": "#/properties/creator",
       "type": "string",
-      "title": "Product Creator",
+      "title": "Package Creator",
       "default": "",
       "examples": [
         "Dropsnorz"
       ],
+      "maxLength": 255,
+      "pattern": "^(.*)$"
+    },
+    "license": {
+      "$id": "#/properties/license",
+      "type": "string",
+      "title": "Package License",
+      "default": "",
+      "examples": [
+        "mit"
+      ],
+      "maxLength": 255,
       "pattern": "^(.*)$"
     },
     "screenshotUrl": {
       "$id": "#/properties/screenshotUrl",
       "type": "string",
-      "title": "Product Screenshot Url",
+      "title": "Package Screenshot Url",
       "default": "",
       "examples": [
         "https://via.placeholder.com/350x150.png"
       ],
-      "pattern": "^(.*)$"
+      "maxLength": 255,
+      "format": "uri",
+      "pattern": "^https://"
     },
     "description": {
       "$id": "#/properties/description",
       "type": "string",
-      "title": "Product Description",
+      "title": "Package Description",
       "default": "",
       "examples": [
         "A frequency filter with LFO modulation"
       ],
+      "maxLength": 1000,
       "pattern": "^(\n|.)*$"
+    },
+    "version": {
+      "$id": "#/properties/version",
+      "type": "string",
+      "title": "Package Version",
+      "default": "",
+      "examples": [
+        "1.0.0"
+      ],
+      "maxLength": 255,
+      "pattern": "^(.*)$"
+    },
+    "technicalUid": {
+      "$id": "#/properties/technicalUid",
+      "type": "string",
+      "title": "Package Technical UID",
+      "default": "",
+      "examples": [
+        "6003215"
+      ],
+      "maxLength": 255,
+      "pattern": "^(.*)$"
     },
     "pageUrl": {
       "$id": "#/properties/pageUrl",
       "type": "string",
-      "title": "Product Page Url",
+      "title": "Package Page Url",
       "default": "",
       "examples": [
         "https://example.com"
       ],
-      "pattern": "^(.*)$"
+      "maxLength": 255,
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "donateUrl": {
+      "$id": "#/properties/donateUrl",
+      "type": "string",
+      "title": "Package Donate Url",
+      "default": "",
+      "examples": [
+        "https://example.com"
+      ],
+      "maxLength": 255,
+      "format": "uri",
+      "pattern": "^https://"
     },
     "type": {
       "$id": "#/properties/type",
@@ -70,7 +135,7 @@
       "examples": [
         "effect"
       ],
-      "pattern": "^(.*)$"
+      "pattern": "^(effect|instrument|unknown)$"
     },
     "stage": {
       "$id": "#/properties/stage",
@@ -80,7 +145,7 @@
       "examples": [
         "release"
       ],
-      "pattern": "^(.*)$"
+      "pattern": "^(beta|demo|release)$"
     },
     "tags": {
       "$id": "#/properties/tags",
@@ -95,6 +160,7 @@
           "Filter",
           "LFO"
         ],
+        "maxLength": 50,
         "pattern": "^(.*)$"
       }
     },
@@ -106,6 +172,7 @@
         "$id": "#/properties/bundles/items",
         "type": "object",
         "title": "Bundle Item",
+        "additionalProperties": false,
         "required": [
           "name",
           "targets",
@@ -122,6 +189,7 @@
             "examples": [
               "Win x64"
             ],
+            "maxLength": 255,
             "pattern": "^(.*)$"
           },
           "targets": {
@@ -137,7 +205,7 @@
                 "win64",
                 "osx"
               ],
-              "pattern": "^(.*)$"
+              "pattern": "^(win64|win32|osx|linux32|linux64)$"
             }
           },
           "format": {
@@ -148,6 +216,28 @@
             "examples": [
               "vst"
             ],
+            "pattern": "^(vst|vst3|au|lv2|various|unknown)$"
+          },
+          "version": {
+            "$id": "#/properties/bundles/items/properties/version",
+            "type": "string",
+            "title": "Bundle version",
+            "default": "",
+            "examples": [
+              "1.0.0"
+            ],
+            "maxLength": 255,
+            "pattern": "^(.*)$"
+          },
+          "technicalUid": {
+            "$id": "#/properties/bundles/items/properties/technicalUid",
+            "type": "string",
+            "title": "Bundle technical UID",
+            "default": "",
+            "examples": [
+              "70848996"
+            ],
+            "maxLength": 255,
             "pattern": "^(.*)$"
           },
           "downloadUrl": {
@@ -158,13 +248,16 @@
             "examples": [
               "https://example.com/plugin.zip"
             ],
-            "pattern": "^(.*)$"
+            "maxLength": 255,
+            "format": "uri",
+            "pattern": "^https://"
           },
           "downloadSha256": {
             "$id": "#/properties/bundles/items/properties/downloadSha256",
             "type": "string",
             "title": "Bundle file SHA256 hash",
             "default": "",
+            "maxLength": 255,
             "pattern": "^(.*)$"
           },
           "fileSize": {
