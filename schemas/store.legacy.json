@@ -19,6 +19,7 @@
       "examples": [
         "My Custom store"
       ],
+      "maxLength": 255,
       "pattern": "^(.*)$"
     },
     "url": {
@@ -29,7 +30,9 @@
       "examples": [
         "https://example.com"
       ],
-      "pattern": "^(.*)$"
+      "maxLength": 255,
+      "format": "uri",
+      "pattern": "^https://"
     },
     "version": {
       "$id": "#/properties/schemaVersion",
@@ -39,6 +42,7 @@
       "examples": [
         "1.0.0"
       ],
+      "maxLength": 255,
       "pattern": "^(.*)$"
     },
     "products": {
