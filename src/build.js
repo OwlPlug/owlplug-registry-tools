@@ -21,10 +21,12 @@ module.exports.buildStore = () => {
 
     for (let group of groups) {
       let groupPath = path.join(registryDirectory, group)
+      assertDirectory(groupPath)
       let packages = fs.readdirSync(groupPath);
 
       for (let package of packages) {
         let packagePath = path.join(groupPath, package);
+        assertDirectory(packagePath)
         let versions = fs.readdirSync(packagePath);
 
         // Only the latest version is used to build the store
@@ -66,10 +68,12 @@ module.exports.buildRegistry = () => {
 
     for (let group of groups) {
       let groupPath = path.join(registryDirectory, group)
+      assertDirectory(groupPath)
       let packages = fs.readdirSync(groupPath);
 
       for (let package of packages) {
         let packagePath = path.join(groupPath, package);
+        assertDirectory(packagePath)
         let versions = fs.readdirSync(packagePath);
 
         let packageSlug = group + "/" + package;
@@ -80,7 +84,10 @@ module.exports.buildRegistry = () => {
         }
 
         for(let version of versions) {
-          let packageVersionYamlFile = path.join(packagePath, version, 'package.yaml');
+          let versionPath = path.join(packagePath, version);
+          assertDirectory(versionPath)
+
+          let packageVersionYamlFile = path.join(versionPath, 'package.yaml');
           let packageVersionContent = yaml.load(fs.readFileSync(packageVersionYamlFile, 'utf8'));
 
           packageContent.versions[version] = packageVersionContent;
@@ -105,3 +112,9 @@ module.exports.buildRegistry = () => {
 
 }
 
+function assertDirectory(file) {
+  if (!fs.statSync(file).isDirectory()) {
+    console.log("File must be a directory :" + file)
+    throw new Error("File must be a directory :" + file)
+  }
+}
