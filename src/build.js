@@ -37,6 +37,11 @@ module.exports.buildStore = () => {
           let packageYamlFile = path.join(packagePath, latestVersionTag, 'package.yaml');
 
           const packageContent = yaml.load(fs.readFileSync(packageYamlFile, 'utf8'));
+
+          if(packageContent.version) {
+            console.log(`Package version is set to ${packageContent.version} but is overwritten by global version ${latestVersionTag}`)
+            packageContent.version = latestVersionTag;
+          }
           registry.products.push(packageContent);
 
         }
@@ -89,6 +94,11 @@ module.exports.buildRegistry = () => {
 
           let packageVersionYamlFile = path.join(versionPath, 'package.yaml');
           let packageVersionContent = yaml.load(fs.readFileSync(packageVersionYamlFile, 'utf8'));
+
+          if(packageVersionContent.version) {
+            console.log(`Package version is set to ${packageVersionContent.version} but is overwritten by global version ${version}`)
+            packageVersionContent.version = version;
+          }
 
           packageContent.versions[version] = packageVersionContent;
         }
