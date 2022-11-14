@@ -42,6 +42,14 @@ module.exports.buildStore = () => {
             console.log(`Package version is set to ${packageContent.version} but is overwritten by global version ${latestVersionTag}`)
             packageContent.version = latestVersionTag;
           }
+
+          // Deprecated: Slug should not be defined on package.
+          let packageSlug = group + "/" + package;
+          if(packageContent.slug) {
+            console.log(`Package slug is set to ${packageContent.slug} but is overwritten by global slug ${packageSlug}`)
+            packageContent.slug = packageSlug;
+          }
+
           registry.products.push(packageContent);
 
         }
@@ -98,6 +106,12 @@ module.exports.buildRegistry = () => {
           if(packageVersionContent.version) {
             console.log(`Package version is set to ${packageVersionContent.version} but is overwritten by global version ${version}`)
             packageVersionContent.version = version;
+          }
+
+          // Deprecated: Slug should not be defined on package.
+          if(packageVersionContent.slug) {
+            console.log(`Package slug is set to ${packageVersionContent.slug} but is overwritten by global slug ${packageSlug}`)
+            packageVersionContent.slug = packageSlug;
           }
 
           packageContent.versions[version] = packageVersionContent;

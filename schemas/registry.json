@@ -53,7 +53,34 @@
         "^.*$": {
           "$id": "#/properties/packages/package",
           "type": "object",
+          "required": [
+            "versions",
+            "slug",
+            "latest_version"
+          ],
           "properties": {
+            "slug" : {
+              "$id": "#/properties/packages/package/slug",
+              "type" : "string",
+              "title": "Package Slug",
+              "default": "",
+              "examples": [
+                "dropsnorz/wobbleizer"
+              ],
+              "maxLength": 255,
+              "pattern": "^[a-z0-9]+(?:[a-z0-9\/]+)*$"
+            },
+            "latest_version" :{
+              "$id": "#/properties/packages/package/latest_version",
+              "type": "string",
+              "title": "Package Version",
+              "default": "",
+              "examples": [
+                "1.0.0"
+              ],
+              "maxLength": 255,
+              "pattern": "^(.*)$"
+            },
             "versions" : {
               "$id": "#/properties/packages/package/versions",
               "type" : "object",
