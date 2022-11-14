@@ -18,6 +18,7 @@
     "ajv-formats": "^2.1.1",
     "crypto": "^1.0.1",
     "js-yaml": "^4.1.0",
+    "prompts": "^2.4.2",
     "semver-sort": "^1.0.0",
     "yargs": "^17.4.0"
   }
