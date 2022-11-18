@@ -1,7 +1,10 @@
+const os = require("os");
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
+const crypto = require('crypto');
 const prompts = require('prompts');
+const download = require('./utils/download')
 
 
 module.exports.createPackage = () => {
@@ -60,7 +63,7 @@ async function promptPackage() {
     {
       type: 'text',
       name: 'screenshotUrl',
-      message: 'Package screeshotUrl URL ?',
+      message: 'Package screenshotUrl URL ?',
     },
   ];
 
@@ -142,13 +145,29 @@ async function promptBundle() {
   let response = await prompts(bundlePrompts);
 
   let bundle = {
-    name: response.name,
+    name: response.name.trim(),
     target: response.target,
-    format: response.format,
-    downloadUrl: response.downloadUrl,
+    format: response.format.trim(),
+    downloadUrl: response.downloadUrl.trim(),
   }
 
-  // TODO Compute bundle SHA256
+  let tempPath = os.tmpdir();
+  if (!fs.existsSync(tempPath)){
+    fs.mkdirSync(tempPath, { recursive: true });
+  }
+
+  let tempFilePath = await download.download(bundle.downloadUrl, tempPath);
+
+  let tempFile = fs.readFileSync(tempFilePath);
+  let hashSum = crypto.createHash('sha256');
+  hashSum.update(tempFile);
+  let hex = hashSum.digest('hex');
+
+  console.log(`Computed SHA256: ${hex}`)
+  bundle.downloadSha256 = hex;
+
+  // Delete file
+  fs.unlinkSync(tempFilePath)
   
   return bundle
 
