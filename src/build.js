@@ -142,3 +142,20 @@ function assertDirectory(file) {
     throw new Error("File must be a directory :" + file)
   }
 }
+
+
+module.exports.filterLatestRegistry = (registry) => {
+  // Replace by structuredClone() with node17
+  let registryLatest = JSON.parse(JSON.stringify(registry))
+
+  for(let packageKey in registryLatest.packages) {
+    let package = registryLatest.packages[packageKey]
+    Object.keys(package.versions).forEach((version) => {
+      if (version != package.latest_version) {
+        delete package.versions[version]
+      }
+    });
+  }
+
+  return registryLatest;
+}
