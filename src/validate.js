@@ -1,9 +1,7 @@
 const yaml = require('js-yaml');
-const https = require("https");
 const crypto = require('crypto');
 const fs = require("fs");
-const path = require("path");
-
+const download = require("./utils/download")
 const schema = require('./schema');
 
 module.exports.validatePackageFile = (path) => {
@@ -29,22 +27,21 @@ async function validatePackage(package) {
         process.exit(-1)
     }
 
-    for (bundle of package.bundles) {
+    for (let bundle of package.bundles) {
 
         let dir = "./build/tmp"
-        let filename = "plugin-file"
 
         if (!fs.existsSync(dir)){
             fs.mkdirSync(dir, { recursive: true });
         }
 
-        let filepath = path.join(dir, filename);
-        await download(bundle.downloadUrl, filepath)
-
-        let file = fs.readFileSync(filepath);
+        let tempFilePath = await download.download(bundle.downloadUrl, dir);
+        let file = fs.readFileSync(tempFilePath);
         let hashSum = crypto.createHash('sha256');
         hashSum.update(file);
         let hex = hashSum.digest('hex');
+
+        fs.unlinkSync(tempFilePath)
         
         if(hex === bundle.downloadSha256) {
             console.log(`Valid SHA256 hash for file ${bundle.downloadUrl}`)
@@ -56,29 +53,4 @@ async function validatePackage(package) {
             process.exit(-1)
         }
     }
-}
-
-const download = async (url, filepath) => {
-    return new Promise((resolve, reject) => {
-        https.get(url, (resp) => {
-
-            // Delete previous file
-            if (fs.existsSync(filepath)) {
-                fs.unlinkSync(filepath);
-            }
-
-            // chunk received
-            resp.on('data', (chunk) => {
-                fs.appendFileSync(filepath, chunk);
-            });
-
-            // last chunk received, download complete
-            resp.on('end', () => {
-                resolve();
-            });
-
-        }).on("error", (err) => {
-            reject(new Error(err.message))
-        });
-    })
 }

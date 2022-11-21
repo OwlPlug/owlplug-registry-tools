@@ -37,6 +37,20 @@ var argv = yargs
   .command('build', 'Build the registry', function (yargs) {
     commands.buildRegistryCommand(yargs)
   })
+  .command('create', 'Create a registry component', function (yargs) {
+    argv = yargs
+      .usage('usage: $0 create <item> [options]')
+      .command('package', 'Create a package using the cli', function (yargs) {
+        commands.createPackageCommand(yargs)
+      })
+      .help('help')
+      .updateStrings({
+        'Commands:': 'item:'
+      })
+      .wrap(null)
+      .argv
+    checkCommands(yargs, argv, 2)
+  })
   .help('help')
   .wrap(null)
   .argv
