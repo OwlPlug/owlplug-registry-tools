@@ -12,7 +12,10 @@ module.exports.buildRegistryCommand = (yargs) => {
   if (!valid) {
     process.exit(-1)
   }
-  exporter.exportRegistryFile(registry)
+
+  let latestRegistry = build.filterLatestRegistry(registry)
+  exporter.exportRegistryFile(registry, latestRegistry)
+
 
   let store = build.buildStore()
   valid = schema.validateStore(store)

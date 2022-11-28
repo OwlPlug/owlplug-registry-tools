@@ -62,8 +62,18 @@ async function promptPackage() {
     },
     {
       type: 'text',
+      name: 'description',
+      message: 'Package description ?',
+    },
+    {
+      type: 'text',
+      name: 'pageUrl',
+      message: 'Package webpage URL ?',
+    },
+    {
+      type: 'text',
       name: 'screenshotUrl',
-      message: 'Package screenshotUrl URL ?',
+      message: 'Package screenshot URL ?',
     },
   ];
 
@@ -76,6 +86,8 @@ async function promptPackage() {
     version: response.version,
     type: response.type,
     screenshotUrl: response.screenshotUrl,
+    pageUrl: response.pageUrl,
+    description : response.description,
     bundles: []
   }
 
@@ -113,7 +125,7 @@ async function promptBundle() {
     },
     {
       type: 'multiselect',
-      name: 'target',
+      name: 'targets',
       message: 'Pick compatible target for your bundle',
       choices: [
         { value: 'win32' },
@@ -146,7 +158,7 @@ async function promptBundle() {
 
   let bundle = {
     name: response.name.trim(),
-    target: response.target,
+    targets: response.targets,
     format: response.format.trim(),
     downloadUrl: response.downloadUrl.trim(),
   }
