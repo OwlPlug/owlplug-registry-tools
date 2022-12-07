@@ -92,7 +92,7 @@ module.exports.buildRegistry = () => {
         let packageSlug = group + "/" + package;
         let packageContent = {
           slug : packageSlug,
-          latest_version: "",
+          latestVersion: "",
           versions : {}
         }
 
@@ -120,7 +120,7 @@ module.exports.buildRegistry = () => {
         // Add a latest version tag
         if (versions.length > 0) {
           semverSort.desc(versions);
-          packageContent.latest_version = versions[0];
+          packageContent.latestVersion = versions[0];
         }
 
         registry.packages[packageSlug] = packageContent;
@@ -151,7 +151,7 @@ module.exports.filterLatestRegistry = (registry) => {
   for(let packageKey in registryLatest.packages) {
     let package = registryLatest.packages[packageKey]
     Object.keys(package.versions).forEach((version) => {
-      if (version != package.latest_version) {
+      if (version != package.latestVersion) {
         delete package.versions[version]
       }
     });

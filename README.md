@@ -1,3 +1,3 @@
-# central-registry-tools
+# owlplug-registry-tools
 
 OwlPlug registry CLI for package manifest creation and maintenance.

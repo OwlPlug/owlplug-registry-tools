@@ -56,7 +56,7 @@
           "required": [
             "versions",
             "slug",
-            "latest_version"
+            "latestVersion"
           ],
           "properties": {
             "slug" : {
@@ -70,8 +70,8 @@
               "maxLength": 255,
               "pattern": "^[a-z0-9]+(?:[a-z0-9\/]+)*$"
             },
-            "latest_version" :{
-              "$id": "#/properties/packages/package/latest_version",
+            "latestVersion" :{
+              "$id": "#/properties/packages/package/latestVersion",
               "type": "string",
               "title": "Package Version",
               "default": "",
