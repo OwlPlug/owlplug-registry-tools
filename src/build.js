@@ -8,7 +8,7 @@ module.exports.buildStore = () => {
   console.log("Building the legacy store...");
 
   let registry = {
-    name: "OwlPlug central",
+    name: "OwlPlug Central Store",
     url: "https://central.owlplug.com",
     schemaVersion: "1.2.0",
     products: []
@@ -68,8 +68,8 @@ module.exports.buildRegistry = () => {
   console.log("Building the registry...");
 
   let registry = {
-    name: "OwlPlug central",
-    url: "https://central.owlplug.com",
+    name: "OwlPlug Registry",
+    url: "https://registry.owlplug.com",
     schemaVersion: "1.2.0",
     packages: {}
   }
