@@ -51,6 +51,9 @@ var argv = yargs
       .argv
     checkCommands(yargs, argv, 2)
   })
+  .command('maintain', 'Revalidate all registry, properties, urls and rules', function (yargs) {
+    commands.maintainRegistryCommand(yargs)
+  })
   .help('help')
   .wrap(null)
   .argv
