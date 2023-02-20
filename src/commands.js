@@ -3,6 +3,7 @@ const schema = require('./schema');
 const exporter = require('./export');
 const validate = require('./validate');
 const create = require('./create')
+const maintain = require('./maintain')
 
 
 module.exports.buildRegistryCommand = (yargs) => {
@@ -50,4 +51,8 @@ module.exports.validatePackageCommand = (yargs) => {
 
 module.exports.createPackageCommand = (yargs) => {
   create.createPackage()
+}
+
+module.exports.maintainRegistryCommand = (yargs) => {
+  maintain.revalidate()
 }
