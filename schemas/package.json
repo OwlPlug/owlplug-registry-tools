@@ -175,7 +175,7 @@
         "required": [
           "name",
           "targets",
-          "format",
+          "formats",
           "downloadUrl",
           "downloadSha256"
         ],
@@ -207,10 +207,26 @@
               "pattern": "^(win64|win32|osx|linux32|linux64)$"
             }
           },
+          "formats": {
+            "$id": "#/properties/bundles/items/properties/formats",
+            "type": "array",
+            "title": "Plugins formats in Bundle",
+            "items": {
+              "$id": "#/properties/bundles/items/properties/formats/items",
+              "type": "string",
+              "title": "Format Item",
+              "default": "",
+              "examples": [
+                "vst",
+                "au"
+              ],
+              "pattern": "^(vst|vst3|au|lv2|clap|aax|unknown)$"
+            }
+          },
           "format": {
             "$id": "#/properties/bundles/items/properties/format",
             "type": "string",
-            "title": "Bundle format",
+            "title": "Bundle format (Deprecated, use formats instead)",
             "default": "",
             "examples": [
               "vst"
