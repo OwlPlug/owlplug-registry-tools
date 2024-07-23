@@ -137,15 +137,18 @@ async function promptBundle() {
       hint: '- Space to select. Return to submit'
     },
     {
-      type: 'select',
-      name: 'format',
-      message: 'Select your bundle format',
+      type: 'multiselect',
+      name: 'formats',
+      message: 'Pick formats included in the Bundle',
       choices: [
         { title: 'VST/VST2', value: 'vst' },
         { title: 'VST3', value: 'vst3' },
-        { title: 'AU', value: 'au' },
-        { title: 'LV2', value: 'lv2' }
-      ]
+        { title: 'Audio Unit (AU)', value: 'au' },
+        { title: 'Clap', value: 'clap' },
+        { title: 'AAX', value: 'aax' },
+        { title: 'Unknown', value: 'unknown' },
+      ],
+      hint: '- Space to select. Return to submit'
     },
     {
       type: 'text',
@@ -159,7 +162,7 @@ async function promptBundle() {
   let bundle = {
     name: response.name.trim(),
     targets: response.targets,
-    format: response.format.trim(),
+    formats: response.bundle.formats,
     downloadUrl: response.downloadUrl.trim(),
   }
 
