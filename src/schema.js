@@ -43,7 +43,8 @@ module.exports.validateStore = (store) => {
 
 module.exports.validatePackage = (pack) => {
 
-    console.log("Validating package schema...")
+    let packageName = pack.name.substring(0,15)
+    console.log(`Validating package schema for ${packageName}...`)
     let ajv = new Ajv();
     addFormats(ajv)
     let validate = ajv.compile(packageSchema)
