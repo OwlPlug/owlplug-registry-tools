@@ -201,10 +201,10 @@
               "title": "Target Item",
               "default": "",
               "examples": [
-                "win64",
-                "osx"
+                "win-x64",
+                "mac"
               ],
-              "pattern": "^(win64|win32|osx|linux32|linux64)$"
+              "pattern": "^(win-x64|win-x32|mac|linux-x32|linux-x64|linux-arm32|linux-arm64)$"
             }
           },
           "formats": {
