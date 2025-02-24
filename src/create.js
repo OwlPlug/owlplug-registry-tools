@@ -128,11 +128,13 @@ async function promptBundle() {
       name: 'targets',
       message: 'Pick compatible target for your bundle',
       choices: [
-        { value: 'win32' },
-        { value: 'win64' },
-        { value: 'osx' },
-        { value: 'linux32' },
-        { value: 'linux64' },
+        { value: 'win-x32' },
+        { value: 'win-x64' },
+        { value: 'mac' },
+        { value: 'linux-x32' },
+        { value: 'linux-x64' },
+        { value: 'linux-arm32' },
+        { value: 'linux-arm64' },
       ],
       hint: '- Space to select. Return to submit'
     },
